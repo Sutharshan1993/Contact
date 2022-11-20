@@ -14,6 +14,13 @@
 		<div class="row">
 			<h1>Contact List</h1>
 		</div>
+		<form th:action="@{/search}" method="get">
+			<input type="text" name="keyword" th:value="${keyword}"
+				placeholder="Find Contact by Name" size="50">
+				<div th:if= "${keyword!= null}">
+			<button type="submit" class="btn btn-info">Search</button>
+			</div>
+		</form>
 		<table class="table table-striped table-bordered">
 			<thead class="table-dark">
 				<tr>
@@ -26,7 +33,7 @@
 				<tr th:with="i=0" th:each="contact, cont : ${contacts}">
 					<td th:text="${cont.count}"></td>
 					<td th:text="${contact.name}"></td>
-					<td> <img th:src="@{{image}(image=${contact.url})}"> </td>
+					<td><img th:src="|${contact.url}|"></td>
 				</tr>
 			</tbody>
 		</table>

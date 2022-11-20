@@ -13,4 +13,6 @@ public interface ContactService {
 	Page<Contact> findPaginated(int pageNo, int pageSize);
 
 	void loadData(List<Contact> cont);
+
+	List<Contact> getByKeyword(String keyword);
 }
