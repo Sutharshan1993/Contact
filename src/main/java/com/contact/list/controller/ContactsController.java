@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.contact.list.entity.Contact;
 import com.contact.list.service.ContactService;
-import com.opencsv.bean.CsvToBeanBuilder;
 
 @Controller
 public class ContactsController {
@@ -30,7 +28,7 @@ public class ContactsController {
 		this.contService = contService;
 	}
 
-	int pageSize = 20;
+	int pageSize = 10;
 
 	@GetMapping("/")
 	public String viewHomePage(Model model) throws Exception, FileNotFoundException {
@@ -75,12 +73,23 @@ public class ContactsController {
 		return "contacts";
 	}
 
+	
+	@GetMapping("/search/{pageNo}/{keyword}")
+	public String findSearchPaginated(@PathVariable(value = "pageNo") int pageNo, Model model, @PathVariable(value = "keyword") String keyword) {
+
+		Page<Contact> page = contService.findSearchPaginated(pageNo, pageSize,keyword);
+		List<Contact> listContact = page.getContent();
+		model.addAttribute("currentPage", pageNo);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("totalPages", page.getTotalPages());
+		model.addAttribute("totalItems", page.getTotalElements());
+		model.addAttribute("contacts", listContact);
+		return "search";
+	}
 	@RequestMapping(path = { "/search" })
 	public String searchByKeyword(Model model, String keyword) {
 		if (keyword != null) {
-			List<Contact> list = contService.getByKeyword(keyword.toUpperCase());
-			model.addAttribute("contacts", list);
-			return "contacts";
+			return findSearchPaginated(1, model,keyword.toUpperCase());
 		} else {
 			return findPaginated(1, model);
 		}

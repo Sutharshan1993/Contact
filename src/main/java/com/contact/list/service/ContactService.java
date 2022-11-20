@@ -11,8 +11,9 @@ public interface ContactService {
 	List<Contact> getAllContacts();
 
 	Page<Contact> findPaginated(int pageNo, int pageSize);
+	
+	Page<Contact> findSearchPaginated(int pageNo, int pageSize,String keyword);
 
 	void loadData(List<Contact> cont);
 
-	List<Contact> getByKeyword(String keyword);
 }

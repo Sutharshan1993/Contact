@@ -12,7 +12,7 @@
 <body>
 	<div class="container">
 		<div class="row">
-			<h1>Contact List</h1>
+			<h1>Search List</h1>
 		</div>
 		<form th:action="@{/search}" method="get">
 			<input type="text" name="keyword" th:value="${keyword}"
@@ -40,24 +40,27 @@
 				<div class="col-sm-2">Total Rows: [[${totalItems}]]</div>
 				<div class="col-sm-1">
 					<span th:each="i: ${#numbers.sequence(1, totalPages)}"> <a
-						th:if="${currentPage != i}" th:href="@{'/page/' + ${i}}">[[${i}]]</a>
+						th:if="${currentPage != i}" th:href="@{'/search/' + ${i}+'/'+${keyword}}">[[${i}]]</a>
 						<span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp;
 						&nbsp;
 					</span>
 				</div>
 				<div class="col-sm-1">
 					<a th:if="${currentPage < totalPages}"
-						th:href="@{'/page/' + ${currentPage + 1}}">Next</a> <span
+						th:href="@{'/search/' + ${currentPage + 1}+'/'+${keyword}}">Next</a> <span
 						th:unless="${currentPage < totalPages}">Next</span>
 				</div>
 
 				<div class="col-sm-1">
 					<a th:if="${currentPage < totalPages}"
-						th:href="@{'/page/' + ${totalPages}}">Last</a> <span
+						th:href="@{'/search/' + ${totalPages}+'/'+${keyword}}">Last</a> <span
 						th:unless="${currentPage < totalPages}">Last</span>
 				</div>
 			</div>
 		</div>
+		<form th:action="@{/page/1}" method="get">
+			<button type="submit" class="btn btn-info">Home</button>
+		</form>
 	</div>
 </body>
 </html>

@@ -38,8 +38,9 @@ public class ContactServiceImpl implements ContactService {
 	}
 
 	@Override
-	public List<Contact> getByKeyword(String keyword) {
-		return contactRepo.findByKeyword(keyword);
+	public Page<Contact> findSearchPaginated(int pageNo, int pageSize, String keyword) {
+		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+		return this.contactRepo.findByKeyword(pageable, keyword);
 	}
 
 }
