@@ -29,18 +29,13 @@ public class ContactsController {
 		super();
 		this.contService = contService;
 	}
+
 	int pageSize = 20;
+
 	@GetMapping("/")
 	public String viewHomePage(Model model) throws Exception, FileNotFoundException {
 		List<Contact> beans = new ArrayList<Contact>();
 		String fileName = "./src/main/resources/people.csv";
-		// model.addAttribute("contacts",contService.getAllContacts());
-		/*
-		 * String fileName = "./src/main/resources/people.csv"; List<Contact> beans =
-		 * new CsvToBeanBuilder(new
-		 * FileReader(fileName)).withType(Contact.class).build().parse();
-		 * beans.forEach(System.out::println);
-		 */
 		String line;
 		try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
 			int i = 1;
@@ -85,13 +80,10 @@ public class ContactsController {
 		if (keyword != null) {
 			List<Contact> list = contService.getByKeyword(keyword.toUpperCase());
 			model.addAttribute("contacts", list);
-		} /*
-			 * else { int pageNo = 1; Page<Contact> page = contService.findPaginated(pageNo,
-			 * pageSize); List<Contact> listContact = page.getContent();
-			 * model.addAttribute("currentPage", pageNo); model.addAttribute("totalPages",
-			 * page.getTotalPages()); model.addAttribute("totalItems",
-			 * page.getTotalElements()); model.addAttribute("contacts", listContact); }
-			 */
-		return "contacts";
+			return "contacts";
+		} else {
+			return findPaginated(1, model);
+		}
+		
 	}
 }
